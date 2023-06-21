@@ -10,6 +10,47 @@ function Login() {
   const [ query ] = useSearchParams()
   const return_url = query.get("return")
 
+  const loginHandler = (body) => {
+    axios.post('http://localhost:8080/api/v1/auth/login', body)
+      .then(res => {
+        console.log(res.data);
+        setUser(res.data);
+        manageLocalStorage(res.data);
+        navToRightPageBasedOnRole(res.data.role)
+      })
+      .catch(err => console.log(err))
+  }
+  const manageLocalStorage = (data) => {
+    localStorage.setItem("token", data.accessToken)
+        localStorage.setItem("refresh", data.refreshToken)
+        localStorage.setItem("role", data.role)
+        localStorage.setItem("firstName", data.firstName)
+        localStorage.setItem("id", data.id)
+        localStorage.setItem("status", data.status)
+  }
+  const navToRightPageBasedOnRole = (role) => {
+    switch (role) {
+      case "CUSTOMER":
+        if(return_url) {
+          nav(return_url, { replace: true });
+          break;
+        }
+        nav("/properties", { replace: true });
+        break;
+
+      case "OWNER":
+        nav("/owner/properties", { replace: true });
+        break;
+
+      case "ADMIN":
+        nav("/properties", { replace: true });
+        break;
+
+      default:
+        nav("/", { replace: true });
+        break;
+    }
+  }
   const onSubmit = (e) => {
     e.preventDefault();
     const form = formRef.current;
@@ -17,39 +58,9 @@ function Login() {
       email: form["email"].value,
       password: form["password"].value
     }
-    axios.post('http://localhost:8080/api/v1/auth/login', body)
-      .then(res => {
-        console.log(res.data);
-        setUser(res.data);
-        localStorage.setItem("token", res.data.accessToken)
-        localStorage.setItem("refresh", res.data.refreshToken)
-        localStorage.setItem("role", res.data.role)
-        localStorage.setItem("firstName", res.data.firstName)
-        localStorage.setItem("id", res.data.id)
-        localStorage.setItem("status", res.data.status)
-        
-        switch (res.data.role) {
-          case "CUSTOMER":
-            if(return_url) {
-              nav(return_url, { replace: true });
-              break;
-            }
-            nav("/properties", { replace: true });
-            break;
-          case "OWNER":
-            nav("/owner/properties", { replace: true });
-            break;
-          case "ADMIN":
-            nav("/properties", { replace: true });
-            break;
-          default:
-            nav("/", { replace: true });
-            break;
-        }
-      })
-      .catch(err => console.log(err))
+    
+    loginHandler(body);
   }
-
   return (
     <div className="flex flex-col items-center">
       <form className="flex border px-6 py-8 rounded-md flex-col" ref={formRef} onSubmit={onSubmit}>
