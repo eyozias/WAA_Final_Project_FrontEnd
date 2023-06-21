@@ -89,7 +89,7 @@ function Signup() {
       >
         <img
           className="hidden h-8 w-auto lg:block mb-3"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+          src="https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg"
           alt="Your Company"
         />
         <h1 className="text-center text-lg mb-6 font-medium">Signup</h1>

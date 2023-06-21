@@ -3,41 +3,46 @@ import { Link, Outlet } from "react-router-dom";
 
 function Anonymous() {
   return (
-    <div className="">
-      <div className="h-90v bg-bg-image bg-fixed bg-cover flex flex-col justify-center items-center bg-left-bottom">
-        <h1 className="font-semibold text-5xl mb-5 text-white">
-          Housing<span className="text-sky-500">.com</span>
-        </h1>
+    <div className="bg-gradient-to-r from-purple-500 to-indigo-500">
+      <div className="h-screen bg-overlay flex flex-col justify-center items-center">
+        <h1 className="font-bold text-6xl text-white mb-5">DreamHomes</h1>
         <Link
           to="/properties"
-          className="text-white px-5 py-3 font-medium rounded-lg border border-sky-500 bg-sky-500 text-xl hover:bg-white hover:text-sky-500 transition"
+          className="px-8 py-4 text-xl text-white font-semibold rounded-lg border border-white hover:bg-white hover:text-purple-500 transition-all duration-300"
         >
-          Check our listings
+          Explore Our Listings
         </Link>
       </div>
 
-      <div className="max-w-5xl mx-auto py-5">
-        <h1 className="font-semibold text-4xl mb-5">
-          Discover how we can help
-        </h1>
-        <div className="grid gap-8 grid-cols-3">
-          <div className="px-4 py-5 border rounded-lg">
-            <h1 className="font-semibold text-2xl mb-2">
-              Find out how much you can afford
+      <div className="max-w-5xl mx-auto py-10">
+        <h1 className="font-semibold text-4xl text-white mb-8">Need Help</h1>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="px-6 py-8 bg-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl">
+            <h1 className="font-semibold text-3xl mb-4">
+              Personalized Budget Assessment
             </h1>
-            We'll help you estimate your budget range
+            <p className="text-gray-700">
+              Get tailored guidance to assess your budget and financial
+              capabilities.
+            </p>
           </div>
-          <div className="px-4 py-5 border rounded-lg">
-            <h1 className="font-semibold text-2xl mb-2">
-              Well help you estimate your budget range
+          <div className="px-6 py-8 bg-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl">
+            <h1 className="font-semibold text-3xl mb-4">
+              Empower Your Financial Planning
             </h1>
-            Get an in-depth look at vour monthlv and closing costs
+            <p className="text-gray-700">
+              Take control of your expenses and gain detailed insights for
+              better financial planning.
+            </p>
           </div>
-          <div className="px-4 py-5 border rounded-lg">
-            <h1 className="font-semibold text-2xl mb-2">
-              Find out how much you can afford
+          <div className="px-6 py-8 bg-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl">
+            <h1 className="font-semibold text-3xl mb-4">
+              Explore a World of Property Possibilities
             </h1>
-            We'll help you estimate your budget range
+            <p className="text-gray-700">
+              Immerse yourself in a diverse selection of properties for sale or
+              rent.
+            </p>
           </div>
         </div>
       </div>
