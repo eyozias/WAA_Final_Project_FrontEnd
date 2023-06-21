@@ -87,7 +87,29 @@ function PropertyDetails() {
                   <h1 className="text-3xl font-bold text-gray-900">
                     ${property.price?.toLocaleString()}
                   </h1>
-                  <p className="text-gray-600">{property.propertyStatus}</p>
+                  <div className="mt-2 flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill={
+                        property.propertyStatus === "AVAILABLE"
+                          ? "rgb(54, 179, 150)"
+                          : property.propertyStatus === "PENDING"
+                          ? "#FFC300"
+                          : "#C70039"
+                      }
+                      className="w-6 h-6"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.5 7.5a3 3 0 013-3h9a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <label className="text-gray-600">
+                      {property.propertyStatus}
+                    </label>
+                  </div>
                 </div>
                 <div className="mb-4">
                   <div className="flex justify-between">
@@ -96,7 +118,7 @@ function PropertyDetails() {
                     </h1>
                   </div>
                   <h1 className="text-lg font-semibold text-gray-800">
-                    Built Year: {property.builtYear}
+                    Built Year: {property.builtYear?.split("-")[0]}
                   </h1>
                   <h1 className="text-gray-600">{property.lotSize} sq. feet</h1>
                 </div>

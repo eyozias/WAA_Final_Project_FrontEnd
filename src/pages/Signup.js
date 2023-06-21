@@ -1,15 +1,57 @@
 import React, { useContext, useRef } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 function Signup() {
   const formRef = useRef(null);
   const nav = useNavigate();
   const { setUser } = useContext(UserContext);
+  const [ query ] = useSearchParams()
+  const return_url = query.get("return")
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const loginHandler = (body) => {
+    axios.post('http://localhost:8080/api/v1/auth/login', body)
+      .then(res => {
+        console.log(res.data);
+        setUser(res.data);
+        manageLocalStorage(res.data);
+        navToRightPageBasedOnRole(res.data.role)
+      })
+      .catch(err => console.log(err))
+  }
+  const manageLocalStorage = (data) => {
+    localStorage.setItem("token", data.accessToken)
+        localStorage.setItem("refresh", data.refreshToken)
+        localStorage.setItem("role", data.role)
+        localStorage.setItem("firstName", data.firstName)
+        localStorage.setItem("id", data.id)
+        localStorage.setItem("status", data.status)
+  }
+  const navToRightPageBasedOnRole = (role) => {
+    switch (role) {
+      case "CUSTOMER":
+        if(return_url) {
+          nav(return_url, { replace: true });
+          break;
+        }
+        nav("/properties", { replace: true });
+        break;
+
+      case "OWNER":
+        nav("/owner/properties", { replace: true });
+        break;
+
+      case "ADMIN":
+        nav("/properties", { replace: true });
+        break;
+
+      default:
+        nav("/", { replace: true });
+        break;
+    }
+  }
+  const signUpHandler = () => {
     const form = formRef.current;
     const body = {
       firstName: form["firstName"].value,
@@ -23,9 +65,19 @@ function Signup() {
       .post("http://localhost:8080/api/v1/auth/signup", body)
       .then(() => {
         alert("Successfully registered");
-        nav("/login");
+        const loginBody = {
+          email: form["email"].value,
+          password: form["password"].value,
+        };
+        loginHandler(loginBody);
+        // nav("/login");
       })
       .catch((err) => console.log(err));
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    signUpHandler();
   };
 
   return (
@@ -37,7 +89,7 @@ function Signup() {
       >
         <img
           className="hidden h-8 w-auto lg:block mb-3"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+          src="https://tailwindui.com/img/logos/workflow-mark-indigo-300.svg"
           alt="Your Company"
         />
         <h1 className="text-center text-lg mb-6 font-medium">Signup</h1>
